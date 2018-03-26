@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                |------+------+------+------+------+------|------+------+------+------+------+------|
  * Tap for ( ---- | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift| ---- Tap for )
  *                |------+------+------+------+------+------+------+------+------+------+------+------|
- * Tap for [ ---- | _GUI | Hyper| Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right | ---- Tap for ]
+ * Tap for { ---- | _GUI | Hyper| Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right | ---- Tap for }
  *                `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = {
