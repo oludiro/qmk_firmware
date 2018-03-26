@@ -20,6 +20,14 @@
 
 #define NO_SOUND
 
+#define NEW_STARTUP_SOUND  \
+    Q__NOTE(_F4),   Q__NOTE(_G4), Q__NOTE(_BF4),  Q__NOTE(_G4),  HD_NOTE(_D5), \
+    HD_NOTE(_D5),   W__NOTE(_C5), S__NOTE(_REST), Q__NOTE(_F4),  Q__NOTE(_G4), \
+    Q__NOTE(_BF4),  Q__NOTE(_G4), HD_NOTE(_C5),   HD_NOTE(_C5),  W__NOTE(_BF4), \
+    S__NOTE(_REST), Q__NOTE(_F4), Q__NOTE(_G4),   Q__NOTE(_BF4), Q__NOTE(_G4), \
+    W__NOTE(_BF4),  H__NOTE(_C5), H__NOTE(_A4),   H__NOTE(_A4),  H__NOTE(_G4), \
+    H__NOTE(_F4),   H__NOTE(_F4), W__NOTE(_C5),   W__NOTE(_BF4),
+
 #define ODE_TO_JOY                                          \
     Q__NOTE(_E4), Q__NOTE(_E4), Q__NOTE(_F4), Q__NOTE(_G4), \
     Q__NOTE(_G4), Q__NOTE(_F4), Q__NOTE(_E4), Q__NOTE(_D4), \
@@ -181,14 +189,14 @@
     Q__NOTE(_AS5 ),        \
     Q__NOTE(_B5),        \
     Q__NOTE(_C6 ),        \
-    Q__NOTE(_CS6 ),        
+    Q__NOTE(_CS6 ),
 
 #define MAJOR_SOUND \
     Q__NOTE(_A5 ),        \
     Q__NOTE(_B5 ),        \
     Q__NOTE(_CS6),        \
     Q__NOTE(_D6 ),        \
-    Q__NOTE(_E6 ),        
+    Q__NOTE(_E6 ),
 
 #define GUITAR_SOUND \
     Q__NOTE(_E5 ),        \
