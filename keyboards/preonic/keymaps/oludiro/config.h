@@ -7,7 +7,7 @@
     #define STARTUP_SONG SONG(ONE_UP_SOUND)
     // #define STARTUP_SONG SONG(NO_SOUND)
 
-    #define DEFAULT_LAYER_SONGS { SONG(QWERTY_SOUND), \
+    #define DEFAULT_LAYER_SONGS { SONG(OVERWATCH_THEME), \
                                   SONG(SONIC_RING), \
                                   SONG(DVORAK_SOUND) \
                                 }
@@ -38,5 +38,8 @@
 
 /* override number of MIDI tone keycodes (each octave adds 12 keycodes and allocates 12 bytes) */
 //#define MIDI_TONE_KEYCODE_OCTAVES 2
+
+// Add Faster hold / tap cut off time for faster typing
+#define PERMISSIVE_HOLD
 
 #endif

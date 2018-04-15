@@ -17,7 +17,9 @@
 
 #include "preonic.h"
 #include "action_layer.h"
+#ifdef STENO_ENABLE
 #include "keymap_steno.h"
+#endif
 
 enum preonic_layers {
   _QWERTY,
@@ -25,32 +27,27 @@ enum preonic_layers {
   _LOWER,
   _RAISE,
   _NAV,
-  _STENO,
+//  _STENO,
   _ADJUST
 };
 
-// Window manager keys
-#define WM_FULL LALT(LGUI(KC_F))
-#define WM_NEXT LCTL(LALT(LGUI(KC_RGHT)))
-#define WM_PREV LCTL(LALT(LGUI(KC_LEFT)))
-#define WM_NW   LCTL(LGUI(KC_LEFT))
-#define WM_N    LALT(LGUI(KC_UP))
-#define WM_NE   LCTL(LGUI(KC_RGHT))
-#define WM_E    LALT(LGUI(KC_RGHT))
-#define WM_SE   S(LCTL(LGUI(KC_RGHT)))
-#define WM_S    LALT(LGUI(KC_DOWN))
-#define WM_SW   S(LCTL(LGUI(KC_LEFT)))
-#define WM_W    LALT(LGUI(KC_LEFT))
-#define WM_CNTR LALT(LGUI(KC_C))
+// MOUSEKEY custom settings
+#define MOUSEKEY_INTERVAL 16
+#define MOUSEKEY_DELAY 0
+#define MOUSEKEY_TIME_TO_MAX 60
+#define MOUSEKEY_MAX_SPEED 7
+#define MOUSEKEY_WHEEL_DELAY 0
 
 enum preonic_keycodes {
   QWERTY = SAFE_RANGE,
+#ifdef STENO_ENABLE
+  EXT_STNO
   STENO,
+#endif
   DVORAK,
   LOWER,
   RAISE,
-  BACKLIT,
-  EXT_STNO
+  BACKLIT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,22 +56,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                ,-----------------------------------------------------------------------------------.
  *                |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Bksp |
  *                |------+------+------+------+------+------+------+------+------+------+------+------|
- *                | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  "   |
+ *                | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  '   |
  *                |------+------+------+------+------+-------------+------+------+------+------+------|
  * Tap for Esc -- |  ^   |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  ^   | -- Tap for Enter
  *                |------+------+------+------+------+------|------+------+------+------+------+------|
  * Tap for ( ---- | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift| ---- Tap for )
  *                |------+------+------+------+------+------+------+------+------+------+------+------|
- * Tap for { ---- | _GUI | Hyper| Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right | ---- Tap for }
+ *                |   {  | Hyper| Alt  | GUI  |Lower |    Space    |Raise |  GUI |  Alt | Hyper|  }   |
  *                `-----------------------------------------------------------------------------------'
- */
+ *                      Tap for [                                                       Tap for ]
+ **/
 [_QWERTY] = {
   {KC_GRV,        KC_1,           KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,              KC_BSPC},
   {KC_TAB,        KC_Q,           KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,              KC_QUOT},
   {CTL_T(KC_ESC), KC_A,           KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    LT(_NAV, KC_SCLN), CTL_T(KC_ENT)},
   {KC_LSPO,       KC_Z,           KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,           KC_RSPC},
-  {KC_LCBR,       CTL_T(KC_RCBR), KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,             KC_RGHT}
+  {KC_LCBR,       LCTL_T(KC_LBRC),KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RGUI, KC_RALT, RCTL_T(KC_RBRC),   KC_RCBR}
 },
+
 
 /* Dvorak
  * ,-----------------------------------------------------------------------------------.
@@ -107,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | | Home | End  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |  Backspace  |      | Next | Vol- | Vol+ | Play |
+ * |      | Paus | Prev | Next |      |  Backspace  |      | Play | Vol- | Vol+ | Mute |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = {
@@ -115,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_DEL},
   {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE},
   {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______},
-  {KC_SLCK, KC_PAUS, KC_MPRV, KC_MNXT, _______, KC_BSPC, KC_BSPC, _______,    KC_MPLY,    KC_VOLD, KC_VOLU, KC_MUTE}
+  {_______, KC_PAUS, KC_MPRV, KC_MNXT, _______, KC_BSPC, KC_BSPC, _______,    KC_MPLY,    KC_VOLD, KC_VOLU, KC_MUTE}
 },
 
 /* Raise
@@ -128,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO # |ISO / |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |   DELETE    |      | Next | Vol- | Vol+ | Play |
+ * |      | Paus | Prev | Next |      |  Backspace  |      | Play | Vol- | Vol+ | Mute |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = {
@@ -136,16 +135,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL},
   {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS},
   {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______},
-  {KC_SLCK, KC_PAUS, KC_MPRV, KC_MNXT, _______, KC_DEL,  KC_DEL,  _______, KC_MPLY, KC_VOLD, KC_VOLU, KC_MUTE}
+  {_______, KC_PAUS, KC_MPRV, KC_MNXT, _______, KC_DEL,  KC_DEL,  _______, KC_MPLY, KC_VOLD, KC_VOLU, KC_MUTE}
 },
 
 /* Directional naviagtion layer
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      | MS_B1| MS_U | MS_B2| MS_WU|      |      |      |      |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      | Home | PgUp | PgDn | End  |  ←   │  ↓   │  ↑   │  →   |      |      |
+ * |      | MS_L | MS_D | MS_R | MS_WD|      |  ←   │  ↓   │  ↑   │  →   | NAV  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -154,8 +153,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_NAV] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______},
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______},
-  {_______, _______, KC_HOME, KC_PGUP, KC_PGDN, KC_END,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, LT(_NAV, KC_SCLN),_______},
+  {_______, KC_BTN1, KC_MS_U, KC_BTN2, KC_WH_U, _______, _______, _______, _______, _______, _______,          _______},
+  {_______, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, LT(_NAV, KC_SCLN),_______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______}
 },
@@ -173,6 +172,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |  A   |  O   |             |   E  |   U  |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
+#ifdef AUDIO_ENABLE
 [_STENO] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
   {STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM},
@@ -180,6 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {_______, STN_SL,  STN_KL,  STN_WL,  STN_RL,  STN_STR, STN_STR, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR},
   {EXT_STNO,_______, _______, STN_A,   STN_O,   KC_SPC,  KC_BSPC, STN_E,   STN_U,   _______, _______, _______}
 },
+#endif
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
@@ -197,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = {
   {KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12},
   {_______, RESET,   DEBUG,   _______, _______, _______, _______, TERM_ON, TERM_OFF,_______, _______, KC_DEL},
-  {_______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  STENO,   DVORAK,  _______, _______},
+  {_______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  DVORAK,  _______,  _______, _______},
   {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
 }
@@ -217,6 +218,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
+#ifdef STENO_ENABLE
         case STENO:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
@@ -227,6 +229,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
+        case EXT_STNO:
+          if (record->event.pressed) {
+            #ifdef AUDIO_ENABLE
+              PLAY_SONG(plover_gb_song);
+            #endif
+            layer_off(_STENO);
+          }
+          return false;
+          break;
+#endif
         case DVORAK:
           if (record->event.pressed) {
             set_single_persistent_default_layer(_DVORAK);
@@ -250,15 +262,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else {
             layer_off(_RAISE);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          }
-          return false;
-          break;
-        case EXT_STNO:
-          if (record->event.pressed) {
-            #ifdef AUDIO_ENABLE
-              PLAY_SONG(plover_gb_song);
-            #endif
-            layer_off(_STENO);
           }
           return false;
           break;
