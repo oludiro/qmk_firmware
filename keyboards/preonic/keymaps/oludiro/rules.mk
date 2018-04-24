@@ -1,4 +1,4 @@
-BACKLIGHT_ENABLE = no   # Enable keyboard backlight functionality
+BACKLIGHT_ENABLE = yes  # Enable keyboard backlight functionality
 COMMAND_ENABLE   = no   # Disable shift combination, which conflicts with shift-parens
 STENO_ENABLE     = no   # Steno mode
 MOUSEKEY_ENABLE  = yes  # Mouse keys (disabled to save space)

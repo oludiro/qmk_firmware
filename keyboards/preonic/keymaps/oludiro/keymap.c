@@ -40,10 +40,10 @@ enum preonic_layers {
 
 enum preonic_keycodes {
   QWERTY = SAFE_RANGE,
-#ifdef STENO_ENABLE
-  EXT_STNO
-  STENO,
-#endif
+// #ifdef STENO_ENABLE
+//   EXT_STNO
+//   STENO,
+// #endif
   DVORAK,
   LOWER,
   RAISE,
@@ -172,25 +172,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |  A   |  O   |             |   E  |   U  |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-#ifdef AUDIO_ENABLE
-[_STENO] = {
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-  {STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM},
-  {_______, STN_SL,  STN_TL,  STN_PL,  STN_HL,  STN_STR, STN_STR, STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR},
-  {_______, STN_SL,  STN_KL,  STN_WL,  STN_RL,  STN_STR, STN_STR, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR},
-  {EXT_STNO,_______, _______, STN_A,   STN_O,   KC_SPC,  KC_BSPC, STN_E,   STN_U,   _______, _______, _______}
-},
-#endif
+// #ifdef AUDIO_ENABLE
+// [_STENO] = {
+//   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
+//   {STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM, STN_NUM},
+//   {_______, STN_SL,  STN_TL,  STN_PL,  STN_HL,  STN_STR, STN_STR, STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR},
+//   {_______, STN_SL,  STN_KL,  STN_WL,  STN_RL,  STN_STR, STN_STR, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR},
+//   {EXT_STNO,_______, _______, STN_A,   STN_O,   KC_SPC,  KC_BSPC, STN_E,   STN_U,   _______, _______, _______}
+// },
+// #endif
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Reset|      |      |      |      |      |      |      |      |      |  Del |
+ * |      | Reset|Debug |      |      |      |      |      |      |      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|AudOff|AGnorm|AGswap|Qwerty|Steno |Dvorak|      |      |
+ * |AGnorm|AGswap|Mus on|Aud on|AudOff|      |      |Qwerty|Dvorak|      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|      |      |      |      |      |
+ * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|LghtTg|LghtSt|BackLt|      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -198,17 +198,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = {
   {KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12},
   {_______, RESET,   DEBUG,   _______, _______, _______, _______, TERM_ON, TERM_OFF,_______, _______, KC_DEL},
-  {_______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  DVORAK,  _______,  _______, _______},
-  {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______},
+  {AG_NORM, AG_SWAP, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  DVORAK,  _______,  _______, _______},
+  {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  BL_TOGG, BL_STEP, BACKLIT, _______, _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
 }
 
 };
 
-#ifdef AUDIO_ENABLE
-  float plover_song[][2]     = SONG(PLOVER_SOUND);
-  float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
-#endif
+// #ifdef AUDIO_ENABLE
+//   float plover_song[][2]     = SONG(PLOVER_SOUND);
+//   float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
+// #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -218,27 +218,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
-#ifdef STENO_ENABLE
-        case STENO:
-          if (record->event.pressed) {
-            #ifdef AUDIO_ENABLE
-              stop_all_notes();
-              PLAY_SONG(plover_song);
-            #endif
-            layer_on(_STENO);
-          }
-          return false;
-          break;
-        case EXT_STNO:
-          if (record->event.pressed) {
-            #ifdef AUDIO_ENABLE
-              PLAY_SONG(plover_gb_song);
-            #endif
-            layer_off(_STENO);
-          }
-          return false;
-          break;
-#endif
+// #ifdef STENO_ENABLE
+//         case STENO:
+//           if (record->event.pressed) {
+//             #ifdef AUDIO_ENABLE
+//               stop_all_notes();
+//               PLAY_SONG(plover_song);
+//             #endif
+//             layer_on(_STENO);
+//           }
+//           return false;
+//           break;
+//         case EXT_STNO:
+//           if (record->event.pressed) {
+//             #ifdef AUDIO_ENABLE
+//               PLAY_SONG(plover_gb_song);
+//             #endif
+//             layer_off(_STENO);
+//           }
+//           return false;
+//           break;
+// #endif
         case DVORAK:
           if (record->event.pressed) {
             set_single_persistent_default_layer(_DVORAK);
