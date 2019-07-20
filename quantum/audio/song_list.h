@@ -30,11 +30,6 @@
     W__NOTE(_BF4),  H__NOTE(_C5), H__NOTE(_A4),   H__NOTE(_A4),  H__NOTE(_G4), \
     H__NOTE(_F4),   H__NOTE(_F4), W__NOTE(_C5),   W__NOTE(_BF4),
 
-#define LP_NUMB	\
-	H__NOTE(_CS5), H__NOTE(_E5), H__NOTE(_CS5), WD_NOTE(_FS5), \
-	WD_NOTE(_A5), WD_NOTE(_GS5),   WD_NOTE(_REST),  H__NOTE(_CS5), H__NOTE(_E5), \
-	H__NOTE(_CS5), WD_NOTE(_A5), WD_NOTE(_GS5), WD_NOTE(_E5),
-
 /* Ode to Joy
  * Author: Friedrich Schiller
  + License: Public Domain
